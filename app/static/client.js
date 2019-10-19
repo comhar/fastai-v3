@@ -14,6 +14,11 @@ function showPicked(input) {
   reader.readAsDataURL(input.files[0]);
 }
 
+function showRotatedImage(rotationAngle){
+  el('image-rotated').src = el('image-picked').src;
+  el('image-rotated').className = 'rotate' + '-' + rotationAngle;
+}
+
 function analyze() {
   var uploadFiles = el("file-input").files;
   if (uploadFiles.length !== 1) alert("Please select a file to analyze!");
@@ -29,7 +34,9 @@ function analyze() {
   xhr.onload = function(e) {
     if (this.readyState === 4) {
       var response = JSON.parse(e.target.responseText);
-      el("result-label").innerHTML = `Result = ${response["result"]}`;
+      let rotationAngle = response['result'];
+      showRotatedImage(rotationAngle);
+      // el("result-label").innerHTML = `Result = ${rotationAngle}`;
     }
     el("analyze-button").innerHTML = "Analyze";
   };
